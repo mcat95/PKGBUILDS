@@ -1,0 +1,36 @@
+# Maintainer: Marco Catalán <mcat95@gmail.com>
+pkgname=mongodb-atlas-cli-git
+pkgver=v1.4.0.r31.bfd0f87cc
+pkgrel=1
+pkgdesc="CLI to manage your MongoDB Atlas cluster"
+arch=("x86_64" "arm64")
+url="https://github.com/mongodb/mongodb-atlas-cli"
+license=('Apache')
+provides=("${pkgname%-git}")
+conflicts=("${pkgname%-git}")
+install=
+source=('git+https://github.com/mongodb/mongodb-atlas-cli.git')
+noextract=()
+checkdepends=("golangci-lint")
+md5sums=('SKIP')
+
+pkgver() {
+	cd "$srcdir/${pkgname%-git}"
+	printf "%s" "$(git describe --long | sed 's/\([^-]*-\)g/r\1/;s/-/./g;s/atlascli\///g')"
+}
+
+
+build() {
+	cd "$srcdir/${pkgname%-git}"
+	make build-atlascli
+}
+
+check() {
+	cd "$srcdir/${pkgname%-git}"
+	make -k check
+}
+
+package() {
+	cd "$srcdir/${pkgname%-git}"
+	make DESTDIR="$pkgdir/" install-atlascli
+}

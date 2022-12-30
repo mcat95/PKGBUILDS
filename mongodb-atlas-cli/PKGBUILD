@@ -1,0 +1,22 @@
+# Maintainer: Marco Catalán <mcat95@gmail.com>
+pkgname=mongodb-atlas-cli
+pkgver=1.4.0
+pkgrel=1
+pkgdesc="CLI to manage your MongoDB Atlas cluster"
+arch=("x86_64" "arm64")
+url="https://github.com/mongodb/mongodb-atlas-cli"
+license=("Apache")
+provides=("${pkgname}")
+conflicts=("${pkgname}")
+source=("https://fastdl.mongodb.org/mongocli/mongodb-atlas-cli_${pkgver}_linux_$arch.tar.gz")
+sha256sums=('6b0206fe917446855fbcf7139844aee64f948faebe8aa12bdb8e2e55a4a1cad1')
+
+prepare(){
+    cd "${srcdir}"
+    tar -xf "mongodb-atlas-cli_${pkgver}_linux_$arch.tar.gz"
+}
+
+package(){
+    mkdir -p "$pkgdir/usr/bin/"
+    cp "$srcdir/mongodb-atlas-cli_${pkgver}_linux_$arch/bin/atlas" "$pkgdir/usr/bin"
+}
